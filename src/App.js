@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
 import './style/App.css'
+import React, {useEffect, useState} from 'react'
 import PostList from './components/PostList';
 import PostForm from './components/PostForm';
 import PostFilter from './components/PostFilter';
@@ -9,21 +9,28 @@ import { usePosts } from './hooks/usePosts';
 import PostService from './API/PostService';
 import MyLoader from './components/UI/loader/MyLoader';
 import { useFetching } from './hooks/useFetching';
+import { getPageCount } from './components/utils/page';
+import MyPagination from './components/UI/pagination/MyPagination';
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
+  const [totalPages, setTotalPages] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(async () =>{
-    const posts = await PostService.getAll()
-    setPosts(posts)
+    const response = await PostService.getAll(limit, page)
+    setPosts(response.data)
+    let totalCount = response.headers['x-total-count']
+    setTotalPages(getPageCount(totalCount, limit))
   })
 
   useEffect(() => {
     fetchPosts()
-  }, [])
+  }, [page])
 
   function createPost(newPost){
     setPosts([...posts, newPost])
@@ -33,7 +40,7 @@ function App() {
   function removePost(post){
     setPosts(posts.filter((p) => p.id !== post.id))
   }
-  
+
   return(
     <div className="App">
       <MyButton style={{marginTop: '30px'}} onClick={() => setModal(true)}>
@@ -51,7 +58,8 @@ function App() {
           <MyLoader/>          
           </div>
         : <PostList remove={removePost} posts={sortedAndSearchedPosts} title='Cписок постов про js'/>
-      }      
+      }
+      <MyPagination totalPages={totalPages} setPage={setPage} page={page}/>
     </div>
   );
 }

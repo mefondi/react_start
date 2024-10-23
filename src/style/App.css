@@ -26,17 +26,17 @@
     margin-right: 0.5rem;
   }
   
-  .post-enter {
+.post-enter {
     transform: translateX(-350px);
   }
-  .post-enter-active {
+.post-enter-active {
     transform: translateX(0px);
     transition: all 500ms ease-in;
   }
-  .post-exit {
+.post-exit {
     opacity: 1;
   }
-  .post-exit-active {
+.post-exit-active {
     transform: translateX(-350px);
     transition: all 500ms ease-in;
   }
