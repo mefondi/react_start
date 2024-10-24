@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
-import MyButton from './UI/button/MyButton';
-import MyInput from './UI/input/MyInput';
+import MyButton from './button/MyButton';
+import MyInput from './input/MyInput';
 
 export default function PostForm({create}) {
     const [post, setPost] = useState({title: '', body: ''});

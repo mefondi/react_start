@@ -1,0 +1,12 @@
+.navbar{
+    height: 50px;
+    width: 99vw;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background: grey;
+}
+  
+.navbar__links{
+    margin-left: auto;
+}
